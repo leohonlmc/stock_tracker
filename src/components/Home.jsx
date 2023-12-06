@@ -9,9 +9,6 @@ import {
   faArrowTrendUp,
   faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
-
-const { REACT_APP_API_ENDPOINT } = process.env;
 
 function Home() {
   const [stock, setStock] = useState([]);
