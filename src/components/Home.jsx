@@ -9,6 +9,7 @@ import {
   faArrowTrendUp,
   faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
+const { REACT_APP_API_KEY } = process.env;
 
 function Home() {
   const [stock, setStock] = useState([]);
@@ -17,7 +18,7 @@ function Home() {
   const ws = useRef(null);
 
   useEffect(() => {
-    ws.current = new WebSocket("ws://localhost:8080/ws");
+    ws.current = new WebSocket(REACT_APP_API_KEY);
 
     ws.current.onopen = () => {
       console.log("WebSocket connected");
