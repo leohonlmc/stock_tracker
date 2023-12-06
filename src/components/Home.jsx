@@ -68,6 +68,11 @@ function Home() {
             aria-label="Example input"
             aria-describedby="button-addon1"
             onChange={handleTickerChange}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                searchTicker();
+              }
+            }}
           />
           <button
             className="btn btn-primary"
