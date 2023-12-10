@@ -1,10 +1,6 @@
 import "../App.css";
 import React, { useRef, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Header from "./partial/Header";
-import Footer from "./partial/Footer";
-
-const { REACT_APP_API_KEY } = process.env;
 
 function Bookmark() {
   return (

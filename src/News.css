@@ -28,14 +28,13 @@ ul {
 }
 
 .sm-img {
-  width: 33%;
+  width: 30%;
   height: 100%;
 }
 
 @media screen and (max-width: 1100px) {
   .sm-img {
-    /* stop the width getting too small */
-    width: 65px;
+    width: 80px;
   }
   .title-ver {
     font-size: 0.9em;

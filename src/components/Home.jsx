@@ -92,13 +92,11 @@ function Home() {
         ) : (
           <div>
             {stock.length === 0 ? (
-              <Table
-                ticker="No data"
-                latestPrice="No data"
-                highestPrice="No data"
-                lowestPrice="No data"
-                disable="true"
-              />
+              <div className="banner">
+                <h2 className="banner-text">
+                  Stock Tracker offers you real-time stock data update.
+                </h2>
+              </div>
             ) : (
               <Table
                 ticker={stock.ticker}
