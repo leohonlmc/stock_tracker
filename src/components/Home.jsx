@@ -3,12 +3,11 @@ import React, { useRef, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "./partial/Header";
 import Footer from "./partial/Footer";
+import News from "./News";
+import Table from "./partial/Table";
+import Loading from "./partial/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMagnifyingGlass,
-  faArrowTrendUp,
-  faSpinner,
-} from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 const { REACT_APP_API_KEY } = process.env;
 
 function Home() {
@@ -24,6 +23,7 @@ function Home() {
       console.log("WebSocket connected");
     };
 
+    //receive message from server
     ws.current.onmessage = (e) => {
       const message = JSON.parse(e.data);
       if (message.action === "stockData") {
@@ -49,77 +49,73 @@ function Home() {
   const searchTicker = () => {
     setLoading(true);
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+      //send message to server
       ws.current.send(JSON.stringify({ action: "getStock", ticker: ticker }));
     }
   };
 
   return (
     <div className="Home">
-      <h2 className="name">
-        Stock Tracker <FontAwesomeIcon icon={faArrowTrendUp} />
-      </h2>
-
-      <div className="d-flex justify-content-center">
-        <div className="input-group w-auto">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Search ticker symbol"
-            aria-label="Example input"
-            aria-describedby="button-addon1"
-            onChange={handleTickerChange}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                searchTicker();
-              }
-            }}
-          />
-          <button
-            className="btn btn-primary"
-            type="button"
-            id="button-addon1"
-            data-mdb-ripple-color="dark"
-            onClick={() => searchTicker()}
-          >
-            <FontAwesomeIcon icon={faMagnifyingGlass} size="xl" />
-          </button>
-        </div>
-      </div>
-      {loading ? (
-        <div className="spinner-div">
-          Loading stock data{" "}
-          <FontAwesomeIcon
-            className="spinner"
-            icon={faSpinner}
-            size="xl"
-            spin
-          />
-        </div>
-      ) : (
-        <div>
-          <table>
-            <thead>
-              <tr>
-                <th>Ticker</th>
-                <th>Current</th>
-                <th>High</th>
-                <th>Low</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="ticker">{stock.ticker}</td>
-                <td className="latest">{stock.latestPrice}</td>
-                <td className="high">{stock.highestPrice}</td>
-                <td className="low">{stock.lowestPrice}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      )}
+      <Header />
 
       <br />
-      <p>* 25 API requests per day</p>
+
+      <div className="inner-home-div">
+        <div className="d-flex justify-content-center">
+          <div className="input-group w-auto">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search ticker symbol"
+              aria-label="Example input"
+              aria-describedby="button-addon1"
+              onChange={handleTickerChange}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  searchTicker();
+                }
+              }}
+            />
+            <button
+              className="btn btn-primary"
+              type="button"
+              id="button-addon1"
+              data-mdb-ripple-color="dark"
+              onClick={() => searchTicker()}
+            >
+              <FontAwesomeIcon icon={faMagnifyingGlass} size="xl" />
+            </button>
+          </div>
+        </div>
+        {loading ? (
+          <Loading />
+        ) : (
+          <div>
+            {stock.length === 0 ? (
+              <Table
+                ticker="No data"
+                latestPrice="No data"
+                highestPrice="No data"
+                lowestPrice="No data"
+                disable="true"
+              />
+            ) : (
+              <Table
+                ticker={stock.ticker}
+                latestPrice={stock.latestPrice}
+                highestPrice={stock.highestPrice}
+                lowestPrice={stock.lowestPrice}
+                disable="false"
+              />
+            )}
+          </div>
+        )}
+
+        <br />
+        <News />
+      </div>
+
+      <Footer />
     </div>
   );
 }

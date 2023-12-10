@@ -1,0 +1,43 @@
+.new-1 {
+  position: relative;
+  margin-right: 10px;
+}
+
+h3 {
+  color: white;
+  font-weight: bold;
+  z-index: 1;
+  text-shadow: 1px 1px 1px #555;
+}
+
+.title {
+  position: absolute;
+  bottom: 0px;
+  padding: 15px;
+}
+
+.title-ver {
+  margin-left: 10px;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+ul {
+  padding: 0px;
+  margin: 0px;
+}
+
+.sm-img {
+  width: 33%;
+  height: 100%;
+}
+
+@media screen and (max-width: 1100px) {
+  .sm-img {
+    /* stop the width getting too small */
+    width: 65px;
+  }
+  .title-ver {
+    font-size: 0.9em;
+  }
+}

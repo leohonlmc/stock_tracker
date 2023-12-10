@@ -1,17 +1,23 @@
-import "../../App.css";
+import "../../Footer.css";
 import React, { useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import {
-//   faImages,
-//   faUserLargeSlash,
-//   faEarthAmericas,
-//   faMapLocationDot,
-//   faPenToSquare,
-// } from "@fortawesome/free-solid-svg-icons";
 
 function Footer() {
-  return <div className="Home"></div>;
+  return (
+    <div className="Footer">
+      <footer class="bg-body-tertiary text-center text-lg-start">
+        <div
+          class="text-center p-3"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
+        >
+          © 2023 Copyright:{" "}
+          <a class="text-body" href="https://mdbootstrap.com/">
+            Stock Tracker
+          </a>
+        </div>
+      </footer>
+    </div>
+  );
 }
 
 export default Footer;
