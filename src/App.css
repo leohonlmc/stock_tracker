@@ -53,7 +53,7 @@ table {
 
 th,
 td {
-  padding: 10px; /* Adds space inside each cell */
+  padding: 10px;
   text-align: left;
 }
 
@@ -74,12 +74,21 @@ tr {
   margin: 0px;
 }
 
-@media screen and (max-width: 1100px) {
+@media screen and (min-width: 1500px) {
   .Home {
-    width: 950px;
+    width: 1400px;
+    margin: auto;
   }
   .inner-home-div {
-    width: 100%;
-    margin: auto;
+    width: 1100px;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .Home {
+    width: 1100px;
+  }
+  .inner-home-div {
+    width: 1100px;
   }
 }

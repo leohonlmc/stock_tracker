@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Bookmark from "./Bookmark";
 
-function News() {
+function News(props) {
   return (
     <div className="News">
       <div className="row">
@@ -59,7 +59,7 @@ function News() {
           </div>
         </div>
         <div className="col-3">
-          <Bookmark />
+          <Bookmark stocks={props.stocks} />
         </div>
       </div>
     </div>

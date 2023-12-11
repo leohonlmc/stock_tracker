@@ -2,7 +2,9 @@ import "../App.css";
 import React, { useRef, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function Bookmark() {
+function Bookmark(props) {
+  console.log(props.stocks);
+
   return (
     <div className="Bookmark">
       <table>

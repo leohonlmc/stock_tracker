@@ -5,13 +5,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function Footer() {
   return (
     <div className="Footer">
-      <footer class="bg-body-tertiary text-center text-lg-start">
+      <footer className="bg-body-tertiary text-center text-lg-start">
         <div
-          class="text-center p-3"
+          className="text-center p-3"
           style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
         >
           © 2023 Copyright:{" "}
-          <a class="text-body" href="https://mdbootstrap.com/">
+          <a className="text-body" href="https://mdbootstrap.com/">
             Stock Tracker
           </a>
         </div>

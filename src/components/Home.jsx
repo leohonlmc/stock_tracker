@@ -1,10 +1,11 @@
 import "../App.css";
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "./partial/Header";
 import Footer from "./partial/Footer";
 import News from "./News";
 import Table from "./partial/Table";
+import Banner from "./partial/Banner";
 import Loading from "./partial/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -12,44 +13,71 @@ const { REACT_APP_API_KEY } = process.env;
 
 function Home() {
   const [stock, setStock] = useState([]);
+  const [stocks, setStocks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [ticker, setTicker] = useState([]);
   const ws = useRef(null);
 
+  const sendBookmark = useCallback(() => {
+    const bookmarkStocks = ["AAPL", "MSFT", "AMZN", "GOOG"];
+
+    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+      ws.current.send(
+        JSON.stringify({ action: "getStocks", stocks: bookmarkStocks })
+      );
+    }
+  }, []);
+
   useEffect(() => {
-    ws.current = new WebSocket(REACT_APP_API_KEY);
+    function connectWebSocket() {
+      ws.current = new WebSocket(REACT_APP_API_KEY);
 
-    ws.current.onopen = () => {
-      console.log("WebSocket connected");
-    };
+      ws.current.onopen = () => {
+        console.log("WebSocket connected");
+        sendBookmark();
+      };
 
-    //receive message from server
-    ws.current.onmessage = (e) => {
-      const message = JSON.parse(e.data);
-      if (message.action === "stockData") {
-        setLoading(false);
-        setStock(message);
+      //receive message from server
+      ws.current.onmessage = (e) => {
+        const message = JSON.parse(e.data);
+        if (message.action === "stockData") {
+          setLoading(false);
+          setStock(message);
+        }
+
+        if (message.action === "stocksData") {
+          setStocks(message.data);
+        }
+      };
+
+      ws.current.onerror = (error) => {
+        console.error("WebSocket error:", error);
+        setTimeout(connectWebSocket, 3000);
+      };
+
+      ws.current.onclose = () => {
+        console.log("WebSocket disconnected");
+      };
+    }
+
+    setTimeout(() => {
+      connectWebSocket();
+    }, 1000);
+
+    return () => {
+      if (ws.current) {
+        ws.current.close();
       }
     };
-
-    ws.current.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
-
-    ws.current.onclose = () => {
-      console.log("WebSocket disconnected");
-    };
-  }, []);
+  }, [sendBookmark]);
 
   const handleTickerChange = (e) => {
     setTicker(e.target.value.toUpperCase());
-    console.log(ticker);
   };
 
   const searchTicker = () => {
     setLoading(true);
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-      //send message to server
       ws.current.send(JSON.stringify({ action: "getStock", ticker: ticker }));
     }
   };
@@ -92,11 +120,7 @@ function Home() {
         ) : (
           <div>
             {stock.length === 0 ? (
-              <div className="banner">
-                <h2 className="banner-text">
-                  Stock Tracker offers you real-time stock data update.
-                </h2>
-              </div>
+              <Banner />
             ) : (
               <Table
                 ticker={stock.ticker}
@@ -110,7 +134,7 @@ function Home() {
         )}
 
         <br />
-        <News />
+        <News stocks={stocks} />
       </div>
 
       <Footer />
